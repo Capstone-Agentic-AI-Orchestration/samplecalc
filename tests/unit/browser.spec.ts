@@ -50,6 +50,27 @@ describe('served calculator browser adapter', () => {
     expect(ui.display.textContent).toBe('15'); expect(ui.expression.textContent).toBe('7 + 8 =');
     ui.click('clear'); expect(ui.display.textContent).toBe('0'); expect(ui.expression.textContent).toBe('Ready when you are');
   });
+  it('exposes pressed state only on operators from startup through replacement and clear', () => {
+    const ui = setup();
+    const operators = ui.buttons.filter(button => ['+', '-', '*', '/'].includes(button.dataset.key!));
+    const expectSelected = (key?: string) => {
+      for (const button of operators) expect(button.attributes['aria-pressed']).toBe(String(button.dataset.key === key));
+      for (const button of ui.buttons.filter(button => !operators.includes(button))) expect(button.attributes['aria-pressed']).toBeUndefined();
+    };
+    expectSelected();
+    expect(ui.display.textContent).toBe('0');
+    ui.click('7'); ui.click('+'); expectSelected('+');
+    ui.click('*'); expectSelected('*');
+    ui.click('2'); ui.click('='); expectSelected();
+    ui.click('/'); ui.click('clear'); expectSelected();
+  });
+  it('clears pending operator indication on error and recovery', () => {
+    const ui = setup();
+    for (const key of ['8', '/', '0', '=']) ui.click(key);
+    const divide = ui.buttons.find(button => button.dataset.key === '/')!;
+    expect(divide.attributes['aria-pressed']).toBe('false');
+    ui.click('4'); expect(divide.attributes['aria-pressed']).toBe('false');
+  });
   it('maps keyboard digits, decimal comma, multiply, backspace, enter and escape', () => {
     const ui = setup();
     for (const key of ['1', ',', '5', '9', 'Backspace', 'x', '2', 'Enter']) expect(ui.keyboard(key)).toHaveBeenCalled();
