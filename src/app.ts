@@ -1,3 +1,4 @@
+import { calculatorPage, calculatorScript } from './calculator-page.js';
 import cors from 'cors';
 import express from 'express';
 import type { Express } from 'express';
@@ -20,4 +21,13 @@ app.use(express.json());
 // What Render polls, and how anything else knows the service is up.
 app.get('/health', (_req, res) => {
   res.json({ status: 'ok' });
+});
+
+// Keep the browser asset generated from the same engine exercised by unit tests.
+app.get('/', (_req, res) => {
+  res.type('html').send(calculatorPage);
+});
+
+app.get('/calculator.js', (_req, res) => {
+  res.type('application/javascript').send(calculatorScript);
 });
