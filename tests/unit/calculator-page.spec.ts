@@ -2,7 +2,7 @@ import request from 'supertest';
 import { runInNewContext } from 'node:vm';
 import { app } from '../../src/app';
 
-type KeyEvent = { key: string; target?: object; ctrlKey?: boolean; metaKey?: boolean; altKey?: boolean; preventDefault: jest.Mock };
+type KeyEvent = { key: string; target?: object; ctrlKey?: boolean; metaKey?: boolean; altKey?: boolean; isComposing?: boolean; preventDefault: jest.Mock };
 
 class Button {
   dataset: { key: string };
@@ -78,5 +78,37 @@ describe('Calculator browser integration', () => {
     ['2', '+', '3', '='].forEach(ui.click);
     expect(ui.key('Enter', { target: ui.buttons[0] }).preventDefault).not.toHaveBeenCalled();
     expect(ui.result.textContent).toBe('5');
+  });
+});
+
+
+describe('Calculator keyboard accessibility', () => {
+  it('supports sign changes without moving focus to the sign button', async () => {
+    const ui = await browser();
+    ['2', '+', 'F9', '3', 'Enter'].forEach(key => ui.key(key));
+    expect(ui.result.textContent).toBe('-1');
+    expect(ui.key('F9').preventDefault).toHaveBeenCalled();
+  });
+
+  it('preserves text editing, composition and browser shortcuts', async () => {
+    const ui = await browser();
+    for (const target of [
+      { isContentEditable: true },
+      { closest: () => ({ tagName: 'INPUT' }) },
+    ]) {
+      expect(ui.key('9', { target }).preventDefault).not.toHaveBeenCalled();
+    }
+    for (const extra of [{ isComposing: true }, { metaKey: true }, { altKey: true }]) {
+      expect(ui.key('9', extra).preventDefault).not.toHaveBeenCalled();
+    }
+    expect(ui.result.textContent).toBe('0');
+  });
+
+  it('serves instructions and a JavaScript-disabled recovery message', async () => {
+    const page = await request(app).get('/');
+    expect(page.text).toContain('aria-describedby="calculator-help"');
+    expect(page.text).toContain('aria-keyshortcuts="F9"');
+    expect(page.text).toContain('<noscript>');
+    expect(page.text).toContain('Operations run left to right.');
   });
 });
