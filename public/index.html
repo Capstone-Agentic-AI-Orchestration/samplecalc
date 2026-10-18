@@ -1,0 +1,36 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#eef2f6">
+<title>Calculator · samplecalc</title>
+<link rel="stylesheet" href="/styles.css">
+<script src="/calculator.js" defer></script><script src="/app.js" defer></script>
+</head>
+<body>
+<main>
+  <header><h1>Calculator<span>.</span></h1><p>A little space to work things out.</p></header>
+  <section class="calculator" aria-label="Calculator">
+    <div class="screen" role="status" aria-live="polite" aria-atomic="true">
+      <p id="expression">Ready when you are</p><output id="display" aria-label="Result">0</output>
+    </div>
+    <div class="keypad">
+      <button data-key="clear" class="utility" aria-label="Clear all">AC</button>
+      <button data-key="sign" class="utility" aria-label="Change sign">±</button>
+      <button data-key="%" class="utility" aria-label="Percent">%</button>
+      <button data-key="/" class="operator" aria-label="Divide">÷</button>
+      <button data-key="7">7</button><button data-key="8">8</button><button data-key="9">9</button>
+      <button data-key="*" class="operator" aria-label="Multiply">×</button>
+      <button data-key="4">4</button><button data-key="5">5</button><button data-key="6">6</button>
+      <button data-key="-" class="operator" aria-label="Subtract">−</button>
+      <button data-key="1">1</button><button data-key="2">2</button><button data-key="3">3</button>
+      <button data-key="+" class="operator" aria-label="Add">+</button>
+      <button data-key="backspace" class="utility" aria-label="Delete last digit"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5h11v14H9L2 12zM12 9l5 6m0-6-5 6"/></svg></button>
+      <button data-key="0">0</button><button data-key="." aria-label="Decimal point">.</button>
+      <button data-key="=" class="equals" aria-label="Equals">=</button>
+    </div>
+  </section>
+  <footer><p>Your keyboard works here, too.</p><p><kbd>Enter</kbd> calculate <span>·</span> <kbd>Esc</kbd> clear <span>·</span> <kbd>⌫</kbd> undo digit</p><p class="note">Operations run in order. Percent divides the current number by 100.</p></footer>
+  <noscript>Please enable JavaScript to use the calculator.</noscript>
+</main>
+</body></html>
