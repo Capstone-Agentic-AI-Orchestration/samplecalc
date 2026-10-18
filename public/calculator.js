@@ -31,6 +31,7 @@ globalThis.Calculator = class Calculator {
       return;
     }
     if (key === 'sign' || key === '%') {
+      if (key === 'sign' && this.operator && this.fresh) { this.display = '-0'; this.fresh = false; return; }
       if (key === 'sign') this.display = this.display.startsWith('-') ? this.display.slice(1) : this.display === '0' ? '0' : '-' + this.display;
       else this.value(Number(this.display) / 100);
       this.fresh = false; this.repeat = null; return;
@@ -54,4 +55,5 @@ globalThis.Calculator = class Calculator {
     }
   }
 };
+
 

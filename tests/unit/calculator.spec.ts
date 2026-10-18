@@ -33,6 +33,7 @@ describe('calculator engine', () => {
     [['1', '2', 'backspace'], '1'],
     [['1', 'sign', 'backspace'], '0'],
     [['5', 'sign', '*', '2', '='], '-10'],
+    [['5', '+', 'sign', '2', '='], '3'],
     [['5', '0', '%'], '0.5'],
     [['2', '+', '5', '0', '%', '='], '2.5'],
     [['9', '+', '2', 'clear', '3', '='], '3'],
@@ -61,3 +62,4 @@ describe('calculator engine', () => {
     expect(calculator.expression).toContain('too large');
   });
 });
+
