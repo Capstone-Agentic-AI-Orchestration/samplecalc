@@ -1,4 +1,5 @@
-import cors from 'cors';
+﻿import cors from 'cors';
+import path from 'node:path';
 import express from 'express';
 import type { Express } from 'express';
 
@@ -21,3 +22,7 @@ app.use(express.json());
 app.get('/health', (_req, res) => {
   res.json({ status: 'ok' });
 });
+
+// Resolve assets beside either src/ (development) or dist/ (production).
+app.use(express.static(path.resolve(__dirname, '../public')));
+
