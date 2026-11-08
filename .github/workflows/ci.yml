@@ -58,8 +58,8 @@ jobs:
       working-directory: ${{ inputs.service_path || '.' }}
       system-name: ${{ inputs.service_name || 'backend' }}
       backend-stack: nodejs
-      node-version: ${{ inputs.node_version || 24 }}
-      coverage-threshold: ${{ inputs.coverage_threshold || 80 }}
+      node-version: ${{ fromJSON(format('{0}', inputs.node_version || 24)) }}
+      coverage-threshold: ${{ fromJSON(format('{0}', inputs.coverage_threshold || 80)) }}
       enforce-coverage: ${{ inputs.enforce_coverage != false }}
 
   lint:
@@ -67,14 +67,14 @@ jobs:
     with:
       working-directory: ${{ inputs.service_path || '.' }}
       system-name: ${{ inputs.service_name || 'backend' }}
-      node-version: ${{ inputs.node_version || 24 }}
+      node-version: ${{ fromJSON(format('{0}', inputs.node_version || 24)) }}
 
   security:
     uses: Capstone-Agentic-AI-Orchestration/alphaorch-workflow/.github/workflows/security-scan.yml@v1
     with:
       working-directory: ${{ inputs.service_path || '.' }}
       system-name: ${{ inputs.service_name || 'backend' }}
-      node-version: ${{ inputs.node_version || 24 }}
+      node-version: ${{ fromJSON(format('{0}', inputs.node_version || 24)) }}
       fail-on-high: true
 
   docker:
