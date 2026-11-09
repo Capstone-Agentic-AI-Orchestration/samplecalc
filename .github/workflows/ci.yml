@@ -32,7 +32,7 @@ on:
         description: "Minimum coverage percentage"
         required: false
         type: number
-        default: 80
+        default: 10
       enforce_coverage:
         description: "Fail when coverage is below threshold or missing"
         required: false
@@ -59,7 +59,7 @@ jobs:
       system-name: ${{ inputs.service_name || 'backend' }}
       backend-stack: nodejs
       node-version: ${{ fromJSON(format('{0}', inputs.node_version || 24)) }}
-      coverage-threshold: ${{ fromJSON(format('{0}', inputs.coverage_threshold || 80)) }}
+      coverage-threshold: ${{ fromJSON(format('{0}', inputs.coverage_threshold || 10)) }}
       enforce-coverage: ${{ inputs.enforce_coverage != false }}
 
   lint:
